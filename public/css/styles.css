@@ -930,6 +930,105 @@ body:has(.chat-fab) .app { padding-bottom: calc(var(--safe-bottom) + 100px); }
 }
 @keyframes mic-pulse { from { opacity: .9; transform: scale(.9); } to { opacity: 0; transform: scale(1.35); } }
 .suggest-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 22px 2px; }
+
+/* ---------- Museum (virtual key display) ---------- */
+.museum-backdrop {
+  position: fixed; inset: 0; background: rgba(0,0,0,.55);
+  opacity: 0; pointer-events: none; transition: opacity .3s; z-index: 45;
+}
+.museum-sheet {
+  position: fixed; left: 0; right: 0; bottom: 0;
+  max-width: 480px; margin: 0 auto;
+  height: calc(100dvh - var(--safe-top) - 12px);
+  background: var(--sheet);
+  border-radius: 22px 22px 0 0;
+  transform: translateY(105%);
+  transition: transform .38s cubic-bezier(.2,.9,.25,1), visibility 0s .38s;
+  visibility: hidden;
+  z-index: 46;
+  display: flex; flex-direction: column;
+}
+.museum-open .museum-backdrop { opacity: 1; pointer-events: auto; }
+.museum-open .museum-sheet { transform: none; visibility: visible; transition-delay: 0s; }
+.museum-open { overflow: hidden; }
+
+.museum-head {
+  display: grid; grid-template-columns: 80px 1fr 80px; align-items: center;
+  padding: 16px 16px 10px;
+}
+.museum-head h2 { margin: 0; font-size: 17px; font-weight: 600; text-align: center; }
+.museum-close { color: var(--accent); }
+
+.museum-stage-wrap { flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 0; padding-bottom: 34px; }
+.museum-empty { text-align: center; color: var(--muted); padding: 0 30px; }
+.museum-empty svg { width: 54px; height: 54px; opacity: .5; margin-bottom: 14px; }
+.museum-empty p { margin: 0; font-size: 16px; font-weight: 600; color: var(--text-2); }
+.museum-empty .m-note { margin-top: 6px; font-size: 14px; font-weight: 400; color: var(--muted); }
+
+.museum-stage { overflow: hidden; user-select: none; -webkit-user-select: none; outline: none; }
+.museum-track { display: flex; will-change: transform; }
+.keyslide { flex: 0 0 100%; width: 100%; display: flex; justify-content: center; }
+
+/* The fob: brand-tinted metal face, ring hole, engraved logo, buttons */
+.keyfob {
+  width: min(238px, 62vw); aspect-ratio: 0.72;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 15px 20px 24px;
+  border-radius: 34px;
+  background:
+    linear-gradient(160deg, rgba(255,255,255,.35), rgba(255,255,255,0) 38%, rgba(0,0,0,.26) 100%),
+    var(--tint, #3e6ae1);
+  border: 1px solid rgba(255,255,255,.28);
+  box-shadow:
+    0 26px 48px rgba(0,0,0,.5),
+    inset 0 1px 1px rgba(255,255,255,.4),
+    inset 0 -2px 6px rgba(0,0,0,.28);
+}
+.fob-ring {
+  width: 30px; height: 30px; border-radius: 50%; margin-bottom: 6px;
+  background: radial-gradient(circle at 35% 32%, #14161c, #05060a 72%);
+  box-shadow: inset 0 2px 3px rgba(0,0,0,.9), 0 1px 1px rgba(255,255,255,.3);
+}
+.fob-logo { display: grid; place-items: center; color: #fff; filter: drop-shadow(0 1px 2px rgba(0,0,0,.35)); }
+.fob-logo img, .fob-logo svg { width: 66px; height: 66px; opacity: .95; object-fit: contain; }
+.fob-logo .fallback { font-size: 26px; font-weight: 800; color: #fff; }
+.fob-brand {
+  margin-top: 8px; font-size: 11px; font-weight: 700; letter-spacing: 2.2px;
+  text-transform: uppercase; color: rgba(255,255,255,.92);
+  white-space: nowrap; overflow: hidden; max-width: 100%; text-overflow: ellipsis;
+}
+.fob-btns { display: flex; gap: 12px; margin-top: auto; }
+.fob-btn {
+  width: 42px; height: 42px; border-radius: 50%; flex: none;
+  display: grid; place-items: center; color: #fff;
+  background: rgba(255,255,255,.14);
+  border: 1px solid rgba(255,255,255,.26);
+  box-shadow: inset 0 2px 4px rgba(255,255,255,.22), inset 0 -2px 4px rgba(0,0,0,.25);
+}
+.fob-btn.big { width: 50px; height: 50px; }
+.fob-btn svg { width: 19px; height: 19px; }
+.fob-btn.big svg { width: 23px; height: 23px; }
+
+.museum-caption { text-align: center; margin-top: 22px; }
+.museum-caption .m-title { font-size: 17px; font-weight: 700; letter-spacing: -.2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 40px; }
+.museum-caption .m-sub { font-size: 13px; color: var(--muted); margin-top: 3px; }
+
+.museum-foot {
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+  margin-top: 18px; height: 26px;
+}
+.museum-dots { display: flex; gap: 7px; }
+.museum-dots button {
+  width: 8px; height: 8px; border-radius: 999px; padding: 0;
+  background: #ffffff3d; transition: width .25s, background .25s;
+}
+.museum-dots button.sel { width: 22px; background: var(--accent); }
+.museum-count {
+  position: absolute; right: 2px; font-size: 12px; color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
 .suggest-row .suggest { margin: 0; }
 .suggest:disabled { opacity: .6; }
 .garage-value { margin: -12px 2px 18px; font-size: 14px; font-weight: 500; color: var(--muted); letter-spacing: .2px; }
