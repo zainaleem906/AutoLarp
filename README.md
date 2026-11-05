@@ -11,6 +11,8 @@ The goal is to mimic the experience of owning and managing high-end vehicles thr
 
 The live deployment is currently down, but you can still run the application locally by following the setup instructions below.
 
+~ Many thanks to Claude Code and Freebuff!
+
 ## LarpHacks 2026 Submission
 
 Built by **Tanish Singh, Zain Aleem, and Emre Gunarslan** as a submission to **LarpHacks 2026**.
